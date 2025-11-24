@@ -18,7 +18,7 @@ public class Program
         const string MenuOption2Msg = "2. Increase LVL - Increase your level (max lvl 5)";
         const string MenuOption3Msg = "3. Loot the mine - Loot the mine to earn bits";
         const string MenuOption4Msg = "4. Show inventory - Show your items on your inventory";
-        const string MenuOption5Msg = "5";
+        const string MenuOption5Msg = "5. Buy items - Show a shop were you can buy items";
         const string MenuOption6Msg = "6";
         const string MenuOption7Msg = "7";
         const string MenuOption0Msg = "0";
@@ -151,7 +151,20 @@ public class Program
 
         // CH4 - Show Inventory VARIABLES
         string[] inventoryItems = new string[0];
-        
+
+        // CH5 - Buy Items CONSTANTS
+        const string ShopWelcomeMsg = "Welcome to the wizard's shop";
+        const string ShopUserBitsMsg = "You have {0} bits.";
+        const string PromptShopItemMsg = "Enter the number of the item you want to buy (0 to exit): ";
+        const string ShopSuccessBuyMsg = "You have bought a {0}. You have {1} bits left.";
+        const string CardDeclinedMsg = "Not enough bits to buy this item."; // Joke
+        const string ExitShopMsg = "Don't waste my time...";
+        const string InvalidShopOptionMsg = "Not valid shop option";
+
+        // CH5 - Buy Items VARIABLES
+        string[] ShopItems = { "Iron Dagger 🗡️", "Healing Potion ⚗️", "Ancient Key 🗝️", "Crossbow 🏹", "Metal Shield 🛡️" };
+        int[] ShopItemsPrices = { 30, 10, 50, 40, 20 };
+        int userShopOption;
 
         do
         {
@@ -340,6 +353,52 @@ public class Program
                             {
                                 Console.WriteLine("- " + item);
                             }
+                        }
+                        break;
+                    case 5:
+                        Console.WriteLine(ShopWelcomeMsg);
+                        Console.WriteLine(ShopUserBitsMsg, userBits);
+                        
+                        for (int i = 0; i < ShopItems.GetLength(0); i++)
+                        {
+                            Console.WriteLine("{0}. {1} - {2} bits", i + 1, ShopItems[i], ShopItemsPrices[i]);
+                        }
+                        Console.WriteLine(PromptShopItemMsg);
+                        if (int.TryParse(Console.ReadLine(), out userShopOption))
+                        {
+                            if (userShopOption > 0 && userShopOption < ShopItems.GetLength(0))
+                            {
+                                userShopOption = userShopOption - 1;
+                                if (userBits >= ShopItemsPrices[userShopOption])
+                                {
+                                    userBits -= ShopItemsPrices[userShopOption];
+                                    string[] newInventory = new string[inventoryItems.GetLength(0) + 1];
+                                    for (int i = 0; i < inventoryItems.GetLength(0); i++)
+                                    {
+                                        newInventory[i] = inventoryItems[i];
+                                    }
+                                    newInventory[newInventory.GetLength(0) - 1] = ShopItems[userShopOption];
+
+                                    inventoryItems = newInventory;
+                                    Console.WriteLine(ShopSuccessBuyMsg, ShopItems[userShopOption], userBits);
+                                }
+                                else
+                                {
+                                    Console.WriteLine(CardDeclinedMsg);
+                                }
+                            }
+                            else if (userShopOption == 0)
+                            {
+                                Console.WriteLine(ExitShopMsg);
+                            }
+                            else
+                            {
+                                Console.WriteLine(InvalidShopOptionMsg);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine(InvalidShopOptionMsg);
                         }
                         break;
                     case 0:
