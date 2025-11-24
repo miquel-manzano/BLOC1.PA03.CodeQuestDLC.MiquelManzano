@@ -146,7 +146,8 @@ public class Program
         int userBits = 0;
 
         // CH4 - Show Inventory CONSTANTS
-
+        const string InventoryEmptyMsg = "Your inventory is empty.";
+        const string InventoryItemsMsg = "Your inventory contains:";
 
         // CH4 - Show Inventory VARIABLES
         string[] inventoryItems = new string[0];
@@ -330,11 +331,11 @@ public class Program
                     case 4:
                         if(inventoryItems.Length == 0)
                         {
-                            Console.WriteLine("Your inventory is empty.");
+                            Console.WriteLine(InventoryEmptyMsg);
                         }
                         else
                         {
-                            Console.WriteLine("Your inventory contains:");
+                            Console.WriteLine(InventoryItemsMsg);
                             foreach (string item in inventoryItems)
                             {
                                 Console.WriteLine("- " + item);
