@@ -16,8 +16,8 @@ public class Program
         const string MenuWelcomeUserMsg = "===== Welcome, {0} the {1} with level {2} =====";//NAME, TITLE, LEVEL
         const string MenuOption1Msg = "1. Train your wizard - Train the mage";
         const string MenuOption2Msg = "2. Increase LVL - Increase your level (max lvl 5)";
-        const string MenuOption3Msg = "3";
-        const string MenuOption4Msg = "4";
+        const string MenuOption3Msg = "3. Loot the mine - Loot the mine to earn bits";
+        const string MenuOption4Msg = "4. Show inventory - Show your items on your inventory";
         const string MenuOption5Msg = "5";
         const string MenuOption6Msg = "6";
         const string MenuOption7Msg = "7";
@@ -145,6 +145,12 @@ public class Program
         int userYInput;
         int userBits = 0;
 
+        // CH4 - Show Inventory CONSTANTS
+
+
+        // CH4 - Show Inventory VARIABLES
+        string[] inventoryItems = new string[0];
+        
 
         do
         {
@@ -318,6 +324,20 @@ public class Program
                             else
                             {
                                 Console.WriteLine(InvalidMapInputMsg);
+                            }
+                        }
+                        break;
+                    case 4:
+                        if(inventoryItems.Length == 0)
+                        {
+                            Console.WriteLine("Your inventory is empty.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Your inventory contains:");
+                            foreach (string item in inventoryItems)
+                            {
+                                Console.WriteLine("- " + item);
                             }
                         }
                         break;
