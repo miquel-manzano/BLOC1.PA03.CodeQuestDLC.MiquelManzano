@@ -166,6 +166,24 @@ public class Program
         int[] ShopItemsPrices = { 30, 10, 50, 40, 20 };
         int userShopOption;
 
+        // CH6 - Show attacks by level CONSTANTS
+        const string CurrentLevelMsg = "Current wizard level: {0}";
+        const string AvailableAttacksMsg = "Available attacks:";
+        const string LevelAttacksHeaderMsg = "Level {0} attacks:";
+        const string NoAttacksAvailableMsg = "No attacks available for this level.";
+
+
+        // Ch6 - Show attacks by level VARIABLES
+        string[][] levelAttacks = new string[][]
+        {
+            new string[] { "Magic Spark 💫" },
+            new string[] { "Fireball 🔥", "Ice Ray 🥏", "Arcane Shield ⚕️" },
+            new string[] { "Meteor ☄️", "Pure Energy Explosion 💥", "Minor Charm 🎭", "Air Strike 🍃" },
+            new string[] { "Wave of Light ⚜️", "Storm of Wings 🐦" },
+            new string[] { "Cataclysm 🌋", "Portal of Chaos 🌀", "Arcane Blood Pact 🩸", "Elemental Storm ⛈️" }
+        };
+
+
         do
         {
             Console.WriteLine(MenuTitleMsg);
@@ -399,6 +417,25 @@ public class Program
                         else
                         {
                             Console.WriteLine(InvalidShopOptionMsg);
+                        }
+                        break;
+                    case 6:
+                        Console.WriteLine(CurrentLevelMsg, wizardLevel);
+                        Console.WriteLine(AvailableAttacksMsg);
+                        if (wizardLevel >= 1 && wizardLevel <= levelAttacks.GetLength(0))
+                        {
+                            for (int i = 0; i < wizardLevel; i++)
+                            {
+                                Console.WriteLine(LevelAttacksHeaderMsg, i + 1);
+                                foreach (string attack in levelAttacks[i])
+                                {
+                                    Console.WriteLine("- " + attack);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine(NoAttacksAvailableMsg);
                         }
                         break;
                     case 0:
