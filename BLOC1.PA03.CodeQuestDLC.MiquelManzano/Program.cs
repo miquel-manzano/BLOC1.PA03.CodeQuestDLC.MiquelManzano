@@ -199,16 +199,20 @@ public class Program
 
         do
         {
+            Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine(MenuTitleMsg);
             if (!string.IsNullOrWhiteSpace(wizardRank) && !string.IsNullOrWhiteSpace(wizardName))
             {
                 Console.WriteLine(MenuWelcomeUserMsg, wizardName, wizardRank, wizardLevel);
             }
+            Console.ResetColor();
             foreach (string option in MenuOptions)
             {
                 Console.WriteLine(option);
             }
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write(MenuPromptMsg);
+            Console.ResetColor();
 
             try
             {
