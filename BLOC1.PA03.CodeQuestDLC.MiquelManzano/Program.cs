@@ -24,6 +24,8 @@ public class Program
         const string MenuOption0Msg = "0. Escape from reality";
         const string MenuPromptMsg = "Choose an option (1-7) - (0) to exit: ";
         string[] MenuOptions = { MenuOption1Msg, MenuOption2Msg, MenuOption3Msg, MenuOption4Msg, MenuOption5Msg, MenuOption6Msg, MenuOption7Msg, MenuOption0Msg };
+        const string MenuExitMsg = "Bye bye";
+        const string MenuInputErrorMessage = "Invalid menu option. Please enter a number between 0 and 7.";
 
         // MENU VARIABLES
         int userMenuOption = 0;
@@ -185,6 +187,9 @@ public class Program
         // CH7 - Decode ancient Scroll CONSTANTS
         const string WelcomeDecodeMsg = "You found an ancient scroll with encrypted messages!\nToDecode:";
         const string DecodeOptionsMsg = "Choose a decoding operation:\n1. Decipher spell (remove spaces)\n2. Count magical runes (vowels)\n3. Extract secret code (numbers)";
+        const string DecodeSuccessMsg = "Congratulations! You have decoded all the ancient scrolls and earned the title 'The String Master Wizard'!";
+        const string StringMasterWizardTitle = "The String Master Wizard";
+        const string InvalidDecodeOptionMsg = "Invalid decode option";
 
         // CH7 - Decode ancient Scroll VARIABLES
         string ancientScrollSpaces = "The 🐲 sleeps in the mountain of fire 🔥";
@@ -500,24 +505,24 @@ public class Program
                             }
                             else
                             {
-                                Console.WriteLine("Invalid decode option");
+                                Console.WriteLine(InvalidDecodeOptionMsg);
                             }
                         }
                         else
                         {
-                            Console.WriteLine("Invalid decode option");
+                            Console.WriteLine(InvalidDecodeOptionMsg);
                         }
                         if (scrollSpacesDecoded && scrollVowelsDecoded && scrollHiddenNumsDecoded)
                         {
-                            Console.WriteLine("Congratulations! You have decoded all the ancient scrolls and earned the title 'The String Master Wizard'!");
-                            wizardRank = "The String Master Wizard";
+                            Console.WriteLine(DecodeSuccessMsg);
+                            wizardRank = StringMasterWizardTitle;
                         }
                         break;
                     case 0:
-                        Console.WriteLine("ExitMessage");
+                        Console.WriteLine(MenuExitMsg);
                         break;
                     default:
-                        Console.WriteLine("Not valid option");
+                        Console.WriteLine(MenuInputErrorMessage);
                         break;
                 }
             }
