@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -123,6 +124,28 @@ public class Program
         int[] monstersHP = { 3, 5, 10, 11, 18, 15, 20, 50, 1 };
         string[] diceFaces = { DiceFace1, DiceFace2, DiceFace3, DiceFace4, DiceFace5, DiceFace6 };
 
+        // CH3 - Loot the mine CONSTANTS
+        const string AttemptsLeftMsg = "You have {0} attempts to mine for bits.";
+        const string EnterXCoordMsg = "Enter X coordinate (0-4): ";
+        const string EnterYCoordMsg = "Enter Y coordinate (0-4): ";
+        const string TryingToDigMsg = "Trying to digg at ({0}, {1})...";
+        const string CoinFoundMsg = "You found a coin! You earned {0} bits. Total bits: {1}";
+        const string NothingFoundMsg = "No coins found at this location.";
+        const string CoordsOutOfRangeMsg = "Coordinates out of range. Please enter values between 0 and 4.";
+        const string InvalidMapInputMsg = "Invalid input. Please enter coordinates between 0 and 4.";
+        const string MineEmptySymbol = "➖";
+        const string MineCoinSymbol = "🪙";
+        const string MineNothingSymbol = "❌";
+
+        // CH3 - Loot the mine VARIABLES
+        int digAttempts;
+        int[,] mineMap = new int[5, 5];
+        string[,] mineMapDisplay = new string[5, 5];
+        int userXInput;
+        int userYInput;
+        int userBits = 0;
+
+
         do
         {
             Console.WriteLine(MenuTitleMsg);
@@ -234,6 +257,68 @@ public class Program
                         {
                             Console.WriteLine(MonsterDefeatMsg, monsterName);
                             Console.WriteLine(MaxLevelMsg);
+                        }
+                        break;
+                    case 3:
+                        digAttempts = 5;
+                        for (int i = 0; i < mineMap.GetLength(0); i++)
+                        {
+                            for (int j = 0; j < mineMap.GetLength(1); j++)
+                            {
+                                mineMapDisplay[i, j] = MineEmptySymbol;
+                                mineMap[i, j] = rnd.Next(0, 2) == 0 ? 0 : 1; // 0 = nothing, 1 = coin
+                            }
+                        }
+
+                        while (digAttempts > 0)
+                        {
+                            Console.WriteLine(AttemptsLeftMsg, digAttempts);
+                            for (int i = 0; i < mineMap.GetLength(0); i++)
+                            {
+                                for (int j = 0; j < mineMap.GetLength(1); j++)
+                                {
+                                    Console.Write(mineMapDisplay[i, j] + " ");
+                                }
+                                Console.WriteLine();
+                            }
+                            Console.WriteLine(EnterXCoordMsg);
+                            
+                            if (int.TryParse(Console.ReadLine(), out userXInput))
+                            {
+                                Console.WriteLine(EnterYCoordMsg);
+                                if (int.TryParse(Console.ReadLine(), out userYInput))
+                                {
+                                    Console.WriteLine(TryingToDigMsg, userXInput, userYInput);
+                                    try
+                                    {
+                                        if (mineMap[userXInput, userYInput] == 1)
+                                        {
+                                            mineMapDisplay[userXInput, userYInput] = MineCoinSymbol;
+                                            int earnedbits = rnd.Next(5, 51);
+                                            userBits = userBits + earnedbits;
+                                            Console.WriteLine(CoinFoundMsg, earnedbits, userBits);
+                                        }
+                                        else
+                                        {
+                                            mineMapDisplay[userXInput, userYInput] = MineNothingSymbol;
+                                            Console.WriteLine(NothingFoundMsg);
+                                        }
+                                        digAttempts--;
+                                    }
+                                    catch (IndexOutOfRangeException)
+                                    {
+                                        Console.WriteLine(CoordsOutOfRangeMsg);
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine(InvalidMapInputMsg);
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine(InvalidMapInputMsg);
+                            }
                         }
                         break;
                     case 0:
