@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -123,8 +124,20 @@ public class Program
         int[] monstersHP = { 3, 5, 10, 11, 18, 15, 20, 50, 1 };
         string[] diceFaces = { DiceFace1, DiceFace2, DiceFace3, DiceFace4, DiceFace5, DiceFace6 };
 
+        // CH3 - Loot the mine CONSTANTS
+        const string MineEmptySymbol = "➖";
+        const string MineCoinSymbol = "🪙";
+        const string MineNothingSymbol = "❌";
+
+        // CH3 - Loot the mine VARIABLES
+        int digAttempts;
+        int[,] mineMap = new int[5, 5];
+        string[,] mineMapDisplay = new string[5, 5];
+
+
         do
         {
+            Console.WriteLine("🪙");
             Console.WriteLine(MenuTitleMsg);
             if (!string.IsNullOrWhiteSpace(wizardRank) && !string.IsNullOrWhiteSpace(wizardName))
             {
@@ -234,6 +247,16 @@ public class Program
                         {
                             Console.WriteLine(MonsterDefeatMsg, monsterName);
                             Console.WriteLine(MaxLevelMsg);
+                        }
+                        break;
+                    case 3:
+                        for (int i = 0; i < mineMap.GetLength(0); i++)
+                        {
+                            for (int j = 0; j < mineMap.GetLength(1); j++)
+                            {
+                                mineMapDisplay[i, j] = MineEmptySymbol;
+                                mineMap[i, j] = rnd.Next(0, 2) == 0 ? 0 : 1; // 0 = nothing, 1 = coin
+                            }
                         }
                         break;
                     case 0:
