@@ -1,15 +1,20 @@
-﻿public class Program
+﻿using System.Text;
+using System.Threading;
+using static System.Net.Mime.MediaTypeNames;
+
+public class Program
 {
     public static void Main()
     {
         // GLOBAL VARIABLES
         Random rnd = new Random();
+        Console.OutputEncoding = Encoding.UTF8;
 
         // MENU CONSTANTS
         const string MenuTitleMsg = "===== MAIN MENU - CODEQUEST =====";
         const string MenuWelcomeUserMsg = "===== Welcome, {0} the {1} with level {2} =====";//NAME, TITLE, LEVEL
         const string MenuOption1Msg = "1. Train your wizard - Train the mage";
-        const string MenuOption2Msg = "2";
+        const string MenuOption2Msg = "2. Increase LVL - Increase your level (max lvl 5)";
         const string MenuOption3Msg = "3";
         const string MenuOption4Msg = "4";
         const string MenuOption5Msg = "5";
@@ -34,9 +39,10 @@
         const string WizardRank2 = "Arka Nullpointer";
         const string WizardRank3 = "Elarion de les Brases";
         const string WizardRank4 = "ITB - Wizard el Gris";
+        const int MaxWizardLevel = 5;
 
         // CH1 - TRAIN WIZARD VARIABLES
-        string wizardName = "";
+        string? wizardName = "";
         int wizardLevel = 1;
         string wizardRank = "";
         int trainingHours;
@@ -49,6 +55,73 @@
                             "Uau! Pots invocar dracs sense cremar el laboratori!",
                             "Has assolit el rang de Mestre dels Arcans!"
                         };
+
+        // CH2 - Increase Lvl CONSTANTS
+        const string MonsterDefeatMsg = "The {0} has been defeated!";
+        const string LevelUpMsg = "Level Up!";
+        const string MaxLevelMsg = "You have reached the maximum level.";
+        const string MonsterAppearMsg = "A wild {0} appears!\nRoll the dice to attack.";
+        const string MonsterStatsMsg = "The {0} has {1} HP.\nPress any key to roll the dice...";
+        const string DiceRollMsg = "You rolled a {0}!";
+        const string DiceDamageMsg = "The monster takes {0} of damage";
+        const string DiceFace1 = @"
+   _______
+  /       /|
+ /_______/ |
+ |       | |
+ |   o   | /
+ |       |/
+ '-------'";
+
+        const string DiceFace2 = @"
+   _______
+  /       /|
+ /_______/ |
+ | o     | |
+ |       | /
+ |     o |/
+ '-------'";
+
+        const string DiceFace3 = @"
+   _______
+  /       /|
+ /_______/ |
+ | o     | |
+ |   o   | /
+ |     o |/
+ '-------'";
+
+        const string DiceFace4 = @"
+   _______
+  /       /|
+ /_______/ |
+ | o   o | |
+ |       | /
+ | o   o |/
+ '-------'";
+
+        const string DiceFace5 = @"
+   _______
+  /       /|
+ /_______/ |
+ | o   o | |
+ |   o   | /
+ | o   o |/
+ '-------'";
+
+        const string DiceFace6 = @"
+   _______
+  /       /|
+ /_______/ |
+ | o   o | |
+ | o   o | /
+ | o   o |/
+ '-------'";
+
+        // CH2 - Increase Lvl VARIABLES
+        string[] monstersNames = { "Wandering Skeleton 💀", "Forest Goblin 👹", "Green Slime 🟢", "Ember Wolf 🐺", "Giant Spider 🕷️", "Iron Golem 🤖", "Lost Necromancer 🧝‍", "Ancient Dragon 🐉", "Cat 🐱" };
+        int[] monstersHP = { 3, 5, 10, 11, 18, 15, 20, 50, 1 };
+        string[] diceFaces = { DiceFace1, DiceFace2, DiceFace3, DiceFace4, DiceFace5, DiceFace6 };
 
         do
         {
@@ -136,7 +209,32 @@
                         Console.WriteLine(RankObtainedMsg, wizardName, wizardPoints, wizardRank);
                         break;
                     case 2:
-                        Console.WriteLine("Option2Message");
+                        int rndMonsterIndex = rnd.Next(0, monstersNames.GetLength(0));
+                        int monsterHP = monstersHP[rndMonsterIndex];
+                        string monsterName = monstersNames[rndMonsterIndex];
+                        int diceRoll;
+                        Console.WriteLine(MonsterAppearMsg, monsterName);
+                        while (monsterHP > 0)
+                        {
+                            Console.WriteLine(MonsterStatsMsg, monsterName, monsterHP);
+                            Console.ReadKey();
+                            diceRoll = rnd.Next(1, 7);
+                            Console.WriteLine(DiceRollMsg, diceRoll);
+                            Console.WriteLine(diceFaces[diceRoll - 1]);
+                            Console.WriteLine(DiceDamageMsg, diceRoll);
+                            monsterHP -= diceRoll;
+                        }
+                        if (wizardLevel < MaxWizardLevel)
+                        {
+                            Console.WriteLine(MonsterDefeatMsg, monsterName);
+                            Console.WriteLine(LevelUpMsg);
+                            wizardLevel++;
+                        }
+                        else
+                        {
+                            Console.WriteLine(MonsterDefeatMsg, monsterName);
+                            Console.WriteLine(MaxLevelMsg);
+                        }
                         break;
                     case 0:
                         Console.WriteLine("ExitMessage");
