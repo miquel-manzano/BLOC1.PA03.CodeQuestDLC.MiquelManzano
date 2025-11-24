@@ -19,9 +19,9 @@ public class Program
         const string MenuOption3Msg = "3. Loot the mine - Loot the mine to earn bits";
         const string MenuOption4Msg = "4. Show inventory - Show your items on your inventory";
         const string MenuOption5Msg = "5. Buy items - Show a shop were you can buy items";
-        const string MenuOption6Msg = "6";
-        const string MenuOption7Msg = "7";
-        const string MenuOption0Msg = "0";
+        const string MenuOption6Msg = "6. Show attacks - Show attacks by wizards level";
+        const string MenuOption7Msg = "7. Decode ancient Scroll - Decode the ancient scroll to become \"The String Master Wizard\"";
+        const string MenuOption0Msg = "0. Escape from reality";
         const string MenuPromptMsg = "Choose an option (1-7) - (0) to exit: ";
         string[] MenuOptions = { MenuOption1Msg, MenuOption2Msg, MenuOption3Msg, MenuOption4Msg, MenuOption5Msg, MenuOption6Msg, MenuOption7Msg, MenuOption0Msg };
 
@@ -172,7 +172,6 @@ public class Program
         const string LevelAttacksHeaderMsg = "Level {0} attacks:";
         const string NoAttacksAvailableMsg = "No attacks available for this level.";
 
-
         // Ch6 - Show attacks by level VARIABLES
         string[][] levelAttacks = new string[][]
         {
@@ -182,6 +181,20 @@ public class Program
             new string[] { "Wave of Light ⚜️", "Storm of Wings 🐦" },
             new string[] { "Cataclysm 🌋", "Portal of Chaos 🌀", "Arcane Blood Pact 🩸", "Elemental Storm ⛈️" }
         };
+
+        // CH7 - Decode ancient Scroll CONSTANTS
+        const string WelcomeDecodeMsg = "You found an ancient scroll with encrypted messages!\nToDecode:";
+        const string DecodeOptionsMsg = "Choose a decoding operation:\n1. Decipher spell (remove spaces)\n2. Count magical runes (vowels)\n3. Extract secret code (numbers)";
+
+        // CH7 - Decode ancient Scroll VARIABLES
+        string ancientScrollSpaces = "The 🐲 sleeps in the mountain of fire 🔥";
+        string ancientScrollVowels = "Ancient magic flows through the crystal caves";
+        string ancientScrollHiddenNums = "Spell: Ignis 5 🔥, Aqua 6 💧, Terra 3 🌍, Ventus 8 🌪️";
+        string[] ancientScrolls = { ancientScrollSpaces, ancientScrollVowels, ancientScrollHiddenNums };
+        int userDecodeOption;
+        bool scrollSpacesDecoded = false;
+        bool scrollVowelsDecoded = false;
+        bool scrollHiddenNumsDecoded = false;
 
 
         do
@@ -436,6 +449,64 @@ public class Program
                         else
                         {
                             Console.WriteLine(NoAttacksAvailableMsg);
+                        }
+                        break;
+                    case 7:
+                        Console.WriteLine(WelcomeDecodeMsg);
+
+                        for (int i = 0; i < ancientScrolls.GetLength(0); i++)
+                        {
+                            Console.WriteLine("Scroll {0}: {1}", i + 1, ancientScrolls[i]);
+                        }
+                        Console.WriteLine(DecodeOptionsMsg);
+
+                        if (int.TryParse(Console.ReadLine(), out userDecodeOption))
+                        {
+                            if (userDecodeOption > 0 && userDecodeOption <= ancientScrolls.GetLength(0))
+                            {
+                                switch (userDecodeOption)
+                                {
+                                    case 1:
+                                        ancientScrollSpaces = ancientScrollSpaces.Replace(" ", "");
+                                        Console.WriteLine("Deciphered Spell: " + ancientScrollSpaces);
+                                        scrollSpacesDecoded = true;
+                                        break;
+                                    case 2:
+                                        int count = ancientScrollVowels.Count(c => "aeiouAEIOU".Contains(c));
+                                        ancientScrollVowels = $"The number of magical runes (vowels) is: {count}";
+                                        Console.WriteLine(ancientScrollVowels);
+                                        scrollVowelsDecoded = true;
+                                        break;
+                                    case 3:
+                                        string scrollHiddenNums = "";
+                                        string numeros = "0123456789";
+                                        for (int i = 0; i < ancientScrollHiddenNums.Length; i++)
+                                        {
+                                            string currentCharacter = ancientScrollHiddenNums[i].ToString();
+
+                                            if (numeros.Contains(currentCharacter))
+                                            {
+                                                scrollHiddenNums += currentCharacter;
+                                            }
+                                        }
+                                        Console.WriteLine("Extracted Secret Code: " + scrollHiddenNums);
+                                        scrollHiddenNumsDecoded = true;
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid decode option");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid decode option");
+                        }
+                        if (scrollSpacesDecoded && scrollVowelsDecoded && scrollHiddenNumsDecoded)
+                        {
+                            Console.WriteLine("Congratulations! You have decoded all the ancient scrolls and earned the title 'The String Master Wizard'!");
+                            wizardRank = "The String Master Wizard";
                         }
                         break;
                     case 0:
